@@ -13,29 +13,30 @@ if CLIENT then
       English = "Recruitment Drive"
     },
     desc = {
-      English = ""
+      English = "It's not a pyramid scheme!"
     }
   }
 end
 
 if SERVER then
-  hook.Add("ScalePlayerDamage", "RecruitDeagleHitReg", function(ply, hitgroup, dmginfo)
-    local attacker = dmginfo:GetAttacker()
-
-    if GetRoundState() ~= ROUND_ACTIVE or not attacker or not IsValid(attacker) or not attacker:IsPlayer() or not IsValid(attacker:GetActiveWeapon()) then return end
-
-    if not ply or not ply:IsPlayer() then return end
-
-    local gun = attacker:GetActiveWeapon()
-
-    if gun:GetClass() ~= "weapon_ttt2mg_recruitdeagle" then return end
-
-    ply:SetRole(attacker:GetSubRole(), attacker:GetTeam())
-    attacker:StripWeapon("weapon_ttt2mg_recruitdeagle")
-
-    dmginfo:SetDamage(0)
-    return true
-  end)
+  -- hook.Add("ScalePlayerDamage", "RecruitDeagleHitReg", function(ply, hitgroup, dmginfo)
+  --   local attacker = dmginfo:GetAttacker()
+  --
+  --   if GetRoundState() ~= ROUND_ACTIVE or not attacker or not IsValid(attacker) or not attacker:IsPlayer() or not IsValid(attacker:GetActiveWeapon()) then return end
+  --
+  --   if not ply or not ply:IsPlayer() then return end
+  --
+  --   local gun = attacker:GetActiveWeapon()
+  --
+  --   if gun:GetClass() ~= "weapon_ttt2mg_recruitdeagle" then return end
+  --
+  --   ply:SetRole(attacker:GetSubRole(), attacker:GetTeam())
+  --   SendFullStateUpdate()
+  --   attacker:StripWeapon("weapon_ttt2mg_recruitdeagle")
+  --
+  --   dmginfo:SetDamage(0)
+  --   return true
+  -- end)
 
   function MINIGAME:OnActivation()
     local plys = util.GetAlivePlayers()
