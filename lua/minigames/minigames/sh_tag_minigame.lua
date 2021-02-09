@@ -1,5 +1,6 @@
 if SERVER then
   AddCSLuaFile()
+  -- resource.AddFile("material/vgui/ttt/tid")
 end
 
 --TODO Add halo effect for "it" player, add ConVars for It timer, create Icon for It player
@@ -15,7 +16,7 @@ if CLIENT then
       English = "Tag!"
     },
     desc = {
-      English = ""
+      English = "The explosive variety!"
     }
   }
 end
@@ -30,7 +31,7 @@ if SERVER then
     local effect = EffectData()
     ply:EmitSound(Sound("ambient/explosions/explode_4.wav"))
 
-    util.BlastDamage(ply, game.GetWorld(), ply:GetPos(), 300, 10000)
+    util.BlastDamage(ply, game.GetWorld(), ply:GetPos(), 150, 10000)
 
     effect:SetStart(ply:GetPos() + Vector(0, 0, 10))
     effect:SetOrigin(ply:GetPos() + Vector(0, 0, 10))
@@ -41,6 +42,7 @@ if SERVER then
     net.WriteString("ttt2mg_tag_exploded")
     net.WriteString(ply:Nick())
     net.Broadcast()
+    ply:SetNWBool("ttt2mgTagIsIt", false)
   end
 
   local function SelectItPlayer(ply)
@@ -103,6 +105,14 @@ if SERVER then
     return true
   end)
 
+  hook.Add("TTT2PostPlayerDeath", "TagMinigamePostDeath", function(ply, _, attacker)
+    if not IsValid(ply) or not ply:IsPlayer() then return end
+    if not ply:GetNWBool("ttt2mgTagIsIt", false) then return end
+    ply:SetNWBool("ttt2mgTagIsIt", false)
+    timer.Remove("ttt2mgTagTimer")
+    timer.Simple(1, SelectItPlayer)
+  end)
+
   function MINIGAME:OnActivation()
     timer.Simple(12.5, SelectItPlayer)
   end
@@ -119,9 +129,51 @@ if SERVER then
 end
 
 if CLIENT then
+
+
+
+  function MINIGAME:OnActivation()
+    hook.Add("PreDrawHalos", "AddItGlow", function()
+      local plys = player.GetAll()
+      -- local client = LocalPlayer()
+      for i = 1, #plys do
+        local ply = plys[i]
+        if not ply:GetNWBool("ttt2mgTagIsIt", false) or not ply:Alive() or ply:IsSpec() then continue end
+        outline.Add(ply, Color(209, 209, 36), OUTLINE_MODE_VISIBLE)
+      end
+    end)
+    hook.Add("TTTRenderEntityInfo", "ttt2mg_tag_targetid", function(tData)
+      local ply = tData:GetEntity()
+
+      if not ply:IsPlayer() then return end
+      -- 
+      -- local client = LocalPlayer()
+
+      if not ply:GetNWBool("ttt2mgTagIsIt", false) then return end
+
+      if tData:GetAmountDescriptionLines() > 0 then
+        tData:AddDescriptionLine()
+      end
+
+      tData:AddDescriptionLine(
+        LANG.TryTranslation("ttt2mg_tag_tid"),
+        COLOR_ORANGE
+      )
+
+      tData:AddIcon(
+        Material("vgui/ttt/tid/tid_destructible"),
+        COLOR_ORANGE
+      )
+    end)
+  end
+
+  function MINIGAME:OnDeactivation()
+    hook.Remove("PreDrawHalos", "AddItGlow")
+  end
+
   hook.Add("Initialize", "ttt2mg_tag_init_status", function()
     STATUS:RegisterStatus("ttt2mg_tag_it", {
-      hud = Material("vgui/ttt/it_icon.vmt"),
+      hud = Material("vgui/ttt/tid/tid_destructible.vmt"),
       type = "bad"
     })
   end)
