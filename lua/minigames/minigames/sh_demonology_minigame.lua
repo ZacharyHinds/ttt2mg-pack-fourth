@@ -15,7 +15,7 @@ if CLIENT then
       English = "Demonology"
     },
     desc = {
-      English = ""
+      English = "No exorcists allowed!"
     }
   }
 end
@@ -24,7 +24,7 @@ if SERVER then
   function MINIGAME:OnActivation()
     local plys = util.GetAlivePlayers()
     for i = 1, #plys do
-      plys[i]:GiveEquipmentItem("item_demonic_possesion")
+      plys[i]:GiveEquipmentItem("item_demonic_possession")
     end
   end
 
@@ -33,7 +33,7 @@ if SERVER then
   end
 
   function MINIGAME:IsSelectable()
-    if items.GetStored("item_demonic_possesion") then
+    if items.GetStored("item_demonic_possession") then
       return true
     else return false end
   end
