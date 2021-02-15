@@ -24,7 +24,9 @@ if SERVER then
   function MINIGAME:OnActivation()
     local plys = util.GetAlivePlayers()
     for i = 1, #plys do
-      plys[i]:GiveEquipmentItem("item_demonic_possession")
+      local ply = plys[i]
+      ply:GiveEquipmentItem("item_demonic_possession")
+      ply.DemonicPossession = true
     end
   end
 

@@ -25,6 +25,14 @@ if SERVER then
   util.AddNetworkString("ttt2mg_tag_epop")
   util.AddNetworkString("ttt2mg_tag_it_status")
 
+  local function CheckIt()
+    local plys = util.GetAlivePlayers()
+    for i = 1, #plys do
+      if ply:GetNWBool("ttt2mgTagIsIt", false) then return true end
+    end
+    return false
+  end
+
   local function DetonateItPlayer(ply)
     if not ply or not ply:IsPlayer() or not ply:Alive() or ply:IsSpec() then return end
     if not ply:GetNWBool("ttt2mgTagIsIt", false) then return end
@@ -47,6 +55,7 @@ if SERVER then
 
   local function SelectItPlayer(ply)
     if GetRoundState() ~= ROUND_ACTIVE then return end
+    if CheckIt() then return end
     if not ply or not IsValid(ply) or not ply:IsPlayer() or not ply:Alive() or ply:IsSpec() then
       local plys = util.GetAlivePlayers()
       ply = plys[math.random(#plys)]
@@ -110,7 +119,7 @@ if SERVER then
     if not ply:GetNWBool("ttt2mgTagIsIt", false) then return end
     ply:SetNWBool("ttt2mgTagIsIt", false)
     timer.Remove("ttt2mgTagTimer")
-    timer.Simple(1, SelectItPlayer)
+    timer.Simple(5, SelectItPlayer)
   end)
 
   function MINIGAME:OnActivation()
@@ -146,7 +155,7 @@ if CLIENT then
       local ply = tData:GetEntity()
 
       if not ply:IsPlayer() then return end
-      -- 
+      --
       -- local client = LocalPlayer()
 
       if not ply:GetNWBool("ttt2mgTagIsIt", false) then return end
