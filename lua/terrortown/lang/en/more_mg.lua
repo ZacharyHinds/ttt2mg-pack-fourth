@@ -1,4 +1,4 @@
-L = LANG.GetLanguageTableReference("english")
+L = LANG.GetLanguageTableReference("en")
 
 --Tag
 L["ttt2mg_tag_is_it"] = "{nick} is it!"
