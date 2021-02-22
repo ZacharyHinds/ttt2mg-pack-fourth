@@ -10,10 +10,10 @@ MINIGAME.conVarData = {}
 if CLIENT then
   MINIGAME.lang = {
     name = {
-      English = "Recruitment Drive"
+      en = "Recruitment Drive"
     },
     desc = {
-      English = "It's not a pyramid scheme!"
+      en = "It's not a pyramid scheme!"
     }
   }
 end

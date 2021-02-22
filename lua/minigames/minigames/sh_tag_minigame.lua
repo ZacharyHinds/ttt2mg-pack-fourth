@@ -13,10 +13,10 @@ MINIGAME.conVarData = {}
 if CLIENT then
   MINIGAME.lang = {
     name = {
-      English = "Tag!"
+      en = "Tag!"
     },
     desc = {
-      English = "The explosive variety!"
+      en = "The explosive variety!"
     }
   }
 end
@@ -28,6 +28,7 @@ if SERVER then
   local function CheckIt()
     local plys = util.GetAlivePlayers()
     for i = 1, #plys do
+      local ply = plys[i]
       if ply:GetNWBool("ttt2mgTagIsIt", false) then return true end
     end
     return false
