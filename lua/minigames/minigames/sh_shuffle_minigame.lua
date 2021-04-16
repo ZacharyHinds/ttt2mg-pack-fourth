@@ -2,6 +2,8 @@ if SERVER then
   AddCSLuaFile()
 end
 
+--TODO: Set credits to default for new role
+
 MINIGAME.author = "Wasted"
 MINIGAME.contact = "Zzzaaaccc13 on TTT2 Discord"
 
