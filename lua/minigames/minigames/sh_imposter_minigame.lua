@@ -35,6 +35,8 @@ if SERVER then
   function MINIGAME:IsSelectable()
     if not DOPPELGANGER then
       return false
+    else
+      return true
     end
   end
 end
