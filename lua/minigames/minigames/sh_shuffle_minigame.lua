@@ -38,6 +38,14 @@ if SERVER then
   local ttt2mg_shuffle_min = CreateConVar("ttt2mg_shuffle_min", "15", {FCVAR_ARCHIVE}, "Minimum delay before role shuffle")
   local ttt2mg_shuffle_max = CreateConVar("ttt2mg_shuffle_max", "300", {FCVAR_ARCHIVE}, "Maximum delay before role shuffle")
 
+  local function SetDefaultCredits(ply)
+    if ply:GetSubRole() == ROLE_TRAITOR then
+      ply:SetCredits(GetConVar("ttt_credits_starting"):GetInt())
+    else
+      ply:SetCredits(GetConVar("ttt_" .. ply:GetSubRoleData().abbr .. "_credits_starting"):GetInt())
+    end
+  end
+
   function MINIGAME:OnActivation()
     timer.Simple(math.random(ttt2mg_shuffle_min:GetInt(), ttt2mg_shuffle_max:GetInt()), function()
       if GetRoundState() ~= ROUND_ACTIVE then return end
@@ -67,7 +75,9 @@ if SERVER then
         local roleA = plyA:GetSubRole()
         local teamA = plyA:GetTeam()
         plyA:SetRole(plyB:GetSubRole(), plyB:GetTeam())
+        SetDefaultCredits(plyA)
         plyB:SetRole(roleA, teamA)
+        SetDefaultCredits(plyB)
         -- print("[Shuffle Minigame] Swapped Roles: " .. plyA:Nick() .. " and " .. plyB:Nick())
       end
       if #groupA > #groupB then
@@ -76,7 +86,9 @@ if SERVER then
         local roleA = plyA:GetSubRole()
         local teamA = plyA:GetTeam()
         plyA:SetRole(plyB:GetSubRole(), plyB:GetTeam())
+        SetDefaultCredits(plyA)
         plyB:SetRole(roleA, teamA)
+        SetDefaultCredits(plyB)
         -- print("[Shuffle Minigame] Swapped Roles: " .. plyA:Nick() .. " and " .. plyB:Nick())
       end
       SendFullStateUpdate()
