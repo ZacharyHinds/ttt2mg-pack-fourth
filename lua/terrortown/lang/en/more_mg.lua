@@ -12,3 +12,7 @@ L["ttt2mg_tag_tid"] = "This player is It!"
 
 -- Peace Negotiations
 L["ttt2mg_peace_ceasefire"] = "Cease Fire!"
+
+
+-- Corrupt Cop
+L["ttt2mg_corrupt_epop"] = "Can {nick} be trusted?"
