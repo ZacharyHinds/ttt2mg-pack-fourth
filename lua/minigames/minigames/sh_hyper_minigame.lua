@@ -12,7 +12,7 @@ MINIGAME.conVarData = {
     slider = true,
     min = 1,
     max = 100,
-    desc = "ttt2mg_hyper_speedmult (Def. 20)"
+    desc = "ttt2mg_hyper_speedmult (Def. 5)"
   }
 }
 
@@ -28,7 +28,7 @@ if CLIENT then
 end
 
 if SERVER then
-  local ttt2mg_hyper_speedmult = CreateConVar("ttt2mg_hyper_speedmult", "20", {FCVAR_ARCHIVE}, "Speed multiplier")
+  local ttt2mg_hyper_speedmult = CreateConVar("ttt2mg_hyper_speedmult", "5", {FCVAR_ARCHIVE}, "Speed multiplier")
   function MINIGAME:OnActivation()
     hook.Add("TTTPlayerSpeedModifier", "HyperSpeedMG", function(ply, _, _, speedMultiplierMod)
       if GetRoundState() ~= ROUND_ACTIVE then hook.Remove("TTTPlayerSpeedModifier", "HyperSpeedMG") return end
