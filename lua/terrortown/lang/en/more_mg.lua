@@ -16,3 +16,6 @@ L["ttt2mg_peace_ceasefire"] = "Cease Fire!"
 
 -- Corrupt Cop
 L["ttt2mg_corrupt_epop"] = "Can {nick} be trusted?"
+
+-- Role Shuffle
+L["ttt2mg_shuffle_epop"] = "Do the shuffle!"

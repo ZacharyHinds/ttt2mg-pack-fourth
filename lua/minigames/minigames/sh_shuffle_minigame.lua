@@ -37,8 +37,10 @@ end
 if SERVER then
   local ttt2mg_shuffle_min = CreateConVar("ttt2mg_shuffle_min", "15", {FCVAR_ARCHIVE}, "Minimum delay before role shuffle")
   local ttt2mg_shuffle_max = CreateConVar("ttt2mg_shuffle_max", "300", {FCVAR_ARCHIVE}, "Maximum delay before role shuffle")
+  util.AddNetworkString("ttt2mg_shuffle_epop")
 
   local function SetDefaultCredits(ply)
+    ply:SetCredits(0)
     if ply:GetSubRole() == ROLE_TRAITOR then
       ply:SetCredits(GetConVar("ttt_credits_starting"):GetInt())
     else
@@ -91,6 +93,8 @@ if SERVER then
         SetDefaultCredits(plyB)
         -- print("[Shuffle Minigame] Swapped Roles: " .. plyA:Nick() .. " and " .. plyB:Nick())
       end
+      net.Start("ttt2mg_shuffle_epop")
+      net.Broadcast()
       SendFullStateUpdate()
     end)
   end
@@ -102,4 +106,13 @@ if SERVER then
   -- function MINIGAME:IsSelectable()
   --   return false
   -- end
+end
+
+if CLIENT then
+  net.Receive("ttt2mg_shuffle_epop", function()
+    EPOP:AddMessage({
+        text = LANG.TryTranslation("ttt2mg_shuffle_epop"),
+        color = COLOR_ORANGE
+    })
+  end)
 end
