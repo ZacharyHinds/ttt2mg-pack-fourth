@@ -83,6 +83,9 @@ if SERVER then
     CreateRagAt(plys[math.random(#plys)])
     local delay = math.random(5, 30) + CurTime()
     hook.Add("Think", "MinigameRainmenThink", function()
+      if GetRoundState() ~= ROUND_ACTIVE then
+        self:OnDeactivation()
+      end
       if delay > CurTime() then return end
       plys = util.GetAlivePlayers()
       CreateRagAt(plys[math.random(#plys)])
