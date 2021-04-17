@@ -30,6 +30,7 @@ if SERVER then
 
     local delay = CurTime() + 0.5
     hook.Add("Think", "DuckMinigameThink", function()
+      if GetRoundState() ~= ROUND_ACTIVE then self:OnDeactivation() return end
       if delay > CurTime() then return end
       local dmginfo = DamageInfo()
       dmginfo:SetAttacker(game.GetWorld())
