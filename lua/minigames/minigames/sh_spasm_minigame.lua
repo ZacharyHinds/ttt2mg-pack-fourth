@@ -114,7 +114,6 @@ if SERVER then
 
   function MINIGAME:OnDeactivation()
     hook.Remove("StartCommand", "SpasmMinigameControl")
-    timer.Remove("SpasmMinigameTimer")
     local plys = player.GetAll()
     for i = 1, #plys do
       ply:SetNWInt("SpasmMinigameTime", 0)
