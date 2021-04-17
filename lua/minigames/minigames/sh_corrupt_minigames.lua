@@ -27,7 +27,7 @@ if SERVER then
       return ply:Alive() and ply:IsPlayer() and not ply:IsSpec() and ply:IsDetective()
     end)
     local ply = plys[math.random(#plys)]
-    print("[Corrupt Cop Minigame] " .. ply:Nick() .. " selected. Role: " .. ply:GetRoleString())
+    -- print("[Corrupt Cop Minigame] " .. ply:Nick() .. " selected. Role: " .. ply:GetRoleString())
     timer.Simple(7, function()
       if math.random(1,100) < 50 then
         ply:SetRole(ROLE_DEFECTIVE)
