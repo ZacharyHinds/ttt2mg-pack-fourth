@@ -23,6 +23,8 @@ end
 if CLIENT then
   function MINIGAME:OnActivation()
     hook.Add("StartCommand", "StumblingMinigameControl", function(ply, ucmd)
+      if GetRoundState() ~= ROUND_ACTIVE then hook.Remove("StartCommand", "StumblingMinigameControl") return end
+      if not IsValid(ply) or not ply:Alive() or ply:IsSpec() then return end
       ucmd:SetForwardMove(ucmd:GetForwardMove() * -1)
       ucmd:SetSideMove(ucmd:GetSideMove() * -1)
       ucmd:SetUpMove(ucmd:GetUpMove() * -1)
