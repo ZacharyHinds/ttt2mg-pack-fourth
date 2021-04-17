@@ -20,6 +20,13 @@ MINIGAME.conVarData = {
     min = 0,
     max = 600,
     desc = "ttt2mg_shuffle_max (def. 300)"
+  },
+
+  ttt2mg_shuffle_count = {
+    slider = true,
+    min = 1,
+    max = 5,
+    desc = "ttt2mg_shuffle_count (def. 1)"
   }
 }
 
@@ -37,6 +44,7 @@ end
 if SERVER then
   local ttt2mg_shuffle_min = CreateConVar("ttt2mg_shuffle_min", "15", {FCVAR_ARCHIVE}, "Minimum delay before role shuffle")
   local ttt2mg_shuffle_max = CreateConVar("ttt2mg_shuffle_max", "300", {FCVAR_ARCHIVE}, "Maximum delay before role shuffle")
+  local ttt2mg_shuffle_count = CreateConVar("ttt2mg_shuffle_count", "1", {FCVAR_ARCHIVE}, "Maximum number of shuffles per round")
   util.AddNetworkString("ttt2mg_shuffle_epop")
 
   local function SetDefaultCredits(ply)
@@ -49,8 +57,16 @@ if SERVER then
   end
 
   function MINIGAME:OnActivation()
-    timer.Simple(math.random(ttt2mg_shuffle_min:GetInt(), ttt2mg_shuffle_max:GetInt()), function()
-      if GetRoundState() ~= ROUND_ACTIVE then return end
+    local delay = math.random(ttt2mg_shuffle_min:GetInt(), ttt2mg_shuffle_max:GetInt()) + CurTime()
+    local count = 0
+    hook.Add("Think", "ShuffleMinigameThink", function()
+      if GetRoundState() ~= ROUND_ACTIVE then
+        hook.Remove("Think", "ShuffleMinigameThink")
+        return
+      end
+      if count > ttt2mg_shuffle_count:GetInt() then return end
+      if delay > CurTime() then return end
+
       local plys = util.GetAlivePlayers()
       -- print("[Shuffle Minigame] " .. #plys .. " found")
       -- local count = #plys
@@ -96,11 +112,12 @@ if SERVER then
       net.Start("ttt2mg_shuffle_epop")
       net.Broadcast()
       SendFullStateUpdate()
+      delay = CurTime() + math.random(ttt2mg_shuffle_min:GetInt(), ttt2mg_shuffle_max:GetInt())
     end)
   end
 
   function MINIGAME:OnDeactivation()
-
+    hook.Remove("Think", "ShuffleMinigameThink")
   end
 
   -- function MINIGAME:IsSelectable()
