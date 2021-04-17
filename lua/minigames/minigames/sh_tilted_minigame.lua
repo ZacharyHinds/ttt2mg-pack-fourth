@@ -58,15 +58,14 @@ if CLIENT then
   }
 end
 
-local ttt2mg_tilted_speed = CreateConVar("ttt2mg_tilted_speed", "0.1", {FCVAR_ARCHIVE, FCVAR_REPLICATED}, "Speed of rotations")
+local ttt2mg_tilted_speed = CreateConVar("ttt2mg_tilted_speed", "0.01", {FCVAR_ARCHIVE, FCVAR_REPLICATED}, "Speed of rotations")
 if SERVER then
   util.AddNetworkString("ttt2mg_tilted")
   local ttt2mg_tilted_angle = CreateConVar("ttt2mg_tilted_angle", "60", {FCVAR_ARCHIVE}, "Max angle titlted can reach")
-  local ttt2mg_tilted_min_delay = CreateConVar("ttt2mg_tilted_min_delay", "1", {FCVAR_ARCHIVE}, "Min delay between angle changes")
-  local ttt2mg_tilted_max_delay = CreateConVar("ttt2mg_tilted_max_delay", "10", {FCVAR_ARCHIVE}, "Max delay between angle changes")
   function MINIGAME:OnActivation()
-    local delay = math.random(ttt2mg_tilted_min_delay:GetInt(), ttt2mg_tilted_max_delay:GetInt()) + CurTime()
-    hook.Add("Think", "tiltedMinigameThink", function()
+    local delay = 5 + CurTime()
+    local angle = math.random(ttt2mg_tilted_angle:GetInt()) * (-1 ^ math.random(1,2))
+    hook.Add("Think", "TiltedMinigameThink", function()
       if GetRoundState() ~= ROUND_ACTIVE then
         hook.Remove("Think", "TiltedMinigameThink")
         return
@@ -75,16 +74,18 @@ if SERVER then
       if delay < CurTime() then
         net.Start("ttt2mg_tilted")
         net.WriteBool(true)
-        local angle = ttt2mg_tilted_angle:GetInt()
-        net.WriteInt(math.random(-angle, angle), 32)
+        net.WriteInt(angle, 32)
         net.Send(plys)
-        delay = CurTime() + math.random(ttt2mg_tilted_min_delay:GetInt(), ttt2mg_tilted_max_delay:GetInt())
+        delay = CurTime() + 5
       end
     end)
   end
 
   function MINIGAME:OnDeactivation()
     hook.Remove("Think", "TiltedMinigameThink")
+    net.Start("ttt2mg_tilted")
+    net.WriteBool(false)
+    net.Broadcast()
   end
 
   -- function MINIGAME:IsSelectable()
@@ -95,9 +96,9 @@ end
 if CLIENT then
   function MINIGAME:OnActivation()
     local roll = 0
-    hook.Add("CreateMove", "TiltedMinigameView", function(cmd)
+    hook.Add("CreateMove", "TiltedMinigameThink", function(cmd)
       local ply = LocalPlayer()
-      if not ply.invertMinigame_enable then return end
+      if not ply.tiltMinigame_enable then return end
       if not ply:Alive() or not ply:IsPlayer() then return end
       local speed = ttt2mg_tilted_speed:GetFloat()
       if roll < ply.tiltedMinigame_roll + speed and roll > ply.tiltedMinigame_roll - speed then
@@ -130,10 +131,10 @@ if CLIENT then
 
   net.Receive("ttt2mg_tilted", function()
     if net.ReadBool() then
-      LocalPlayer().invertMinigame_enable = true
+      LocalPlayer().tiltMinigame_enable = true
       LocalPlayer().tiltedMinigame_roll = net.ReadInt(32)
     else
-      LocalPlayer().invertMinigame_enable = nil
+      LocalPlayer().tiltMinigame_enable = nil
       LocalPlayer().tiltedMinigame_roll = 0
     end
   end)
