@@ -21,7 +21,7 @@ end
 if SERVER then
   function MINIGAME:OnActivation()
     local plys = util.GetFilteredPlayers(function(ply)
-      return ply:Alive() and ply:IsPlayer() and not ply:IsSpec() and ply:HasTeam(TEAM_INNOCENT) and not ply:IsDetective()
+      return ply:Alive() and ply:IsPlayer() and not ply:IsSpec() and ply:GetTeam() == TEAM_INNOCENT and not ply:IsDetective()
     end)
 
     for i = 1, #plys do
