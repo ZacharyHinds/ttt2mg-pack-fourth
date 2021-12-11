@@ -126,7 +126,7 @@ if CLIENT then
   end
 
   function MINIGAME:OnDeactivation()
-    hook.Remove("CreateMove", "InverseMinigameMouse")
+    hook.Remove("CreateMove", "TiltedMinigameThink")
   end
 
   net.Receive("ttt2mg_tilted", function()
