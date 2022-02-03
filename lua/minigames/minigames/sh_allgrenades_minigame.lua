@@ -67,10 +67,19 @@ if SERVER then
       ply:SetMaxHealth(new_maxhp)
       ply:SetHealth(new_hp)
     end
+
+    timer.Create('ttt2mg_ooops_more_grenandes_timer', 45, 0, function()
+      local plys = util.GetAlivePlayers()
+      for i = 1, #plys do
+        local ply = plys[i]
+        local pos = ply:GetPos()
+        SpawnGrenadePos(pos)
+      end
+    end)
   end
 
   function MINIGAME:OnDeactivation()
-
+    timer.Remove('ttt2mg_ooops_more_grenandes_timer')
   end
 
 end
