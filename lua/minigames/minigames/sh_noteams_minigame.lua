@@ -30,7 +30,7 @@ if SERVER then
 
       for pl in pairs(tbl) do
         if pl == ply then continue end
-        tbl[pl] = {ROLE_INNOCENT, TEAM_INNOCENT}
+        tbl[pl] = {ROLE_NONE, TEAM_NONE}
       end
     end)
   end
