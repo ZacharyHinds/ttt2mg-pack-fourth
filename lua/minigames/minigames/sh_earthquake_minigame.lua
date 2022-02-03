@@ -42,10 +42,6 @@ if SERVER then
   end
 
   function MINIGAME:OnDeactivation()
-
-  end
-
-  function MINIGAME:IsSelectable()
-    return false
+    hook.Remove("Think", "EarthquakeMinigameThink")
   end
 end
