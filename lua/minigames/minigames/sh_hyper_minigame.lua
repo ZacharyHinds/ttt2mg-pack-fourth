@@ -40,8 +40,4 @@ if SERVER then
   function MINIGAME:OnDeactivation()
     hook.Remove("TTTPlayerSpeedModifier", "HyperSpeedMG")
   end
-
-  -- function MINIGAME:IsSelectable()
-  --   return true
-  -- end
 end

@@ -61,10 +61,6 @@ if SERVER then
   end
 
   function MINIGAME:OnDeactivation()
-
+    timer.Remove("KnifeMinigame")
   end
-
-  -- function MINIGAME:IsSelectable()
-  --   return false
-  -- end
 end

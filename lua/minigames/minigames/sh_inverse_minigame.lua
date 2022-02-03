@@ -37,6 +37,7 @@ end
 
 if CLIENT then
   function MINIGAME:OnActivation()
+    -- local delay = CurTime() + 5
     hook.Add("CreateMove", "InverseMinigameMouse", function(cmd)
       local ply = LocalPlayer()
       if not ply.invertMinigame_inverted then return end
@@ -50,7 +51,7 @@ if CLIENT then
       invert.p = math.Clamp(invert.p, -89, 89)
 
       cmd:SetViewAngles(invert)
-      ply:SetEyeAngles(invert)
+      -- ply:SetEyeAngles(invert)
     end)
   end
 

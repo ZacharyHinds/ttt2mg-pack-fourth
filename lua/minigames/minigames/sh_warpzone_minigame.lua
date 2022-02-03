@@ -42,19 +42,6 @@ if SERVER then
       print(tgt)
       local rnd = math.random(1, 100)
 
-      -- if not IsValid(tgt) and distance < 5000 then
-      --   if rnd > 75 then
-      --     ply:SetPos(hit_pos)
-      --   elseif rnd < 10 then
-      --     local spawnpoint = spawn.GetRandomPlayerSpawnEntity(ply)
-      --     ply:SetPos(spawnpoint:GetPos())
-      --   end
-      -- elseif rnd < 20 then
-      --   local pos = ply:GetPos()
-      --   ply:SetPos(tgt:GetPos())
-      --   tgt:SetPos(pos)
-      -- end
-
       if IsValid(tgt) and tgt:IsPlayer() and rnd <= ttt2mg_warpzone_warpchance:GetInt() then
         local pos = ply:GetPos()
         ply:SetPos(tgt:GetPos())
@@ -72,8 +59,4 @@ if SERVER then
   function MINIGAME:OnDeactivation()
     hook.Remove("EntityFireBullets", "MinigameWarpZoneFire")
   end
-
-  -- function MINIGAME:IsSelectable()
-  --   return false
-  -- end
 end
