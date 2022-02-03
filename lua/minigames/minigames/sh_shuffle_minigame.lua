@@ -36,7 +36,7 @@ if CLIENT then
       en = "Role Shuffle"
     },
     desc = {
-      en = ""
+      en = "Prepare for utter chaos!"
     }
   }
 end
