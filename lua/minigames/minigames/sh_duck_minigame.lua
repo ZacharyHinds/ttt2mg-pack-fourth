@@ -50,5 +50,6 @@ if SERVER then
   function MINIGAME:OnDeactivation()
     hook.Remove("StartCommand", "DuckMinigameCommand")
     hook.Remove("Think", "DuckMinigameThink")
+  end
 
 end
